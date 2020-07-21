@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://And-Git-roid.github.io</id>
     <title>Gridea</title>
-    <updated>2020-07-21T03:15:04.534Z</updated>
+    <updated>2020-07-21T12:35:17.342Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://And-Git-roid.github.io"/>
     <link rel="self" href="https://And-Git-roid.github.io/atom.xml"/>
@@ -16,7 +16,46 @@
         <link href="https://And-Git-roid.github.io/post/git-yu-github/">
         </link>
         <updated>2020-07-21T03:10:50.000Z</updated>
-        <content type="html"><![CDATA[<p>Git是当下最先进的开源分布式版本控制系统</p>
+        <content type="html"><![CDATA[<ul>
+<li>Git是当下最先进的开源分布式版本控制系统。分布式版本控制系统不把相应的版本项目集中在一台电脑（或服务器）上，而是每个人的电脑上都保存着一份完整的版本项目。</li>
+<li>Github是一个代码托管云服务网站，帮助开发者存储和管理项目源代码，且能够追踪、记录并控制用户对其代码的修改。</li>
+<li>Git是一个命令行工具，一个分布式版本控制系统，它在背后追踪和管理代码历史版本。Github是一个代码托管网站，背后采用Git作为版本控制工具。主要将项目代码托管到云服务器上，而不是本地硬盘上。</li>
+<li>SSH设置<br>
+Secure Shell(安全外壳协议，简称SSH)是一种加密的网络传输协议，可以在不安全的网络中为网络提供安全的传输环境。SSH通过在网络中创建安全隧道来实现SSH客户端与服务器之间的连接。SSH以非对称加密实现身份验证。可以人工生成一对公钥和私钥，通过生成的密钥进行认证，这样就可以在不输入密钥的情况下登录。使用SSH登录Gitlab过程如下：<br>
+第一步：登录 git中配置用户名和邮箱<br>
+<img src="https://And-Git-roid.github.io/post-images/1595331401470.png" alt="" loading="lazy"><br>
+第二步：创建SSH密钥对：<code>ssh-keygen -t ed25519 -C &quot;email@example.com（个人邮箱）&quot;</code><br>
+<img src="https://And-Git-roid.github.io/post-images/1595332359951.png" alt="" loading="lazy"><br>
+此过程需要按三次回车，在~/users/.ssh文件夹下就可以看到生成的两个密钥。<br>
+第二步：查看ssh-agent是否启动<br>
+<img src="https://And-Git-roid.github.io/post-images/1595331733798.png" alt="" loading="lazy"><br>
+备注：我的已经启动了，为了展示完整过程，我关掉ssh-agent<br>
+第三步：启动ssh-agent并将私钥配置给本地SSH<br>
+<img src="https://And-Git-roid.github.io/post-images/1595332641904.png" alt="" loading="lazy"><br>
+我们可以看到出错：<code>Could not open a connection to your authentication agent.</code><br>
+第四步：通过命令解决问题并将私钥添加给ssh-agent<code>ssh-agent bash</code><br>
+<img src="https://And-Git-roid.github.io/post-images/1595332902589.png" alt="" loading="lazy"><br>
+第五步：给Gitlab配置公钥：Gitlab中点击个人头像--&gt;Settings--&gt;SSH Keys<br>
+<img src="https://And-Git-roid.github.io/post-images/1595333074917.png" alt="" loading="lazy"><br>
+在Key下方的框中粘贴公钥的所有内容，生成时里面的内容是什么就粘贴什么。最后点击Add key。<br>
+第六步：进行连接测试 <code>ssh -T git@服务器域名</code><br>
+<img src="https://And-Git-roid.github.io/post-images/1595333271580.png" alt="" loading="lazy"><br>
+如果成功了，<code>将会出现Welcome to GitLab, @个人的用户名!</code><br>
+<img src="https://And-Git-roid.github.io/post-images/1595333691572.png" alt="" loading="lazy"><br>
+第七步：使用TortoiseGit进行克隆测试<br>
+1.使用PuTTY Key Generator生成Tortoise可以使用的私钥<br>
+点击Load载入~\Users.ssh中生成的私钥<br>
+<img src="https://And-Git-roid.github.io/post-images/1595334037897.png" alt="" loading="lazy"><br>
+点击<code>Save private key</code>进行存储，最后在~\Users.ssh中我们会得到一个.ppk文件<br>
+第八步：使用TortoiseGit进行项目克隆<br>
+URL:要克隆的Github项目路径，直接去Github上复制<br>
+目录：项目在自己电脑上的保存路径<br>
+加载Putty密钥：选择上一步生成的.ppk文件<br>
+<img src="https://And-Git-roid.github.io/post-images/1595334434968.png" alt="" loading="lazy"><br>
+URL、目录和密钥都设置好之后点击确定<br>
+<img src="https://And-Git-roid.github.io/post-images/1595334871529.png" alt="" loading="lazy"><br>
+我们看到可以成功克隆了！！！</li>
+</ul>
 ]]></content>
     </entry>
 </feed>
