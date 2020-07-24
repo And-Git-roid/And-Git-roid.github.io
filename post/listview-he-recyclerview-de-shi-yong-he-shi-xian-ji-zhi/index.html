@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>ListView和RecyclerView的基本使用 | Gridea</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://And-Git-roid.github.io/favicon.ico?v=1595554744062">
+<link rel="stylesheet" href="https://And-Git-roid.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="ListView是Android系统提供的一种列表显示控件。RecyclerView是ListView的升级版，它在展现形式上更加灵活，缓存机制的不同也使得它效率更高。
+ListView的使用
+以ListView的形式展现内容主要会涉及到四..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://And-Git-roid.github.io">
+        <img src="https://And-Git-roid.github.io/images/avatar.png?v=1595554744062" class="site-logo">
+        <h1 class="site-title">Gridea</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://And-Git-roid.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">ListView和RecyclerView的基本使用</h2>
+            <div class="post-date">2020-07-23</div>
+            
+            <div class="post-content" v-pre>
+              <p>ListView是Android系统提供的一种列表显示控件。RecyclerView是ListView的升级版，它在展现形式上更加灵活，缓存机制的不同也使得它效率更高。<br>
+ListView的使用<br>
+以ListView的形式展现内容主要会涉及到四个部分：ListView、Adapter和item布局和数据。ListView只负责显示内容，item布局决定了数据的展现形式，Adapter作为一个中间桥梁将item布局和数据绑定并最终交给ListView展示。<br>
+ListView展示简单的水果图片及名称为例。<br>
+主界面布局只包含一个ListView</p>
+<pre><code> &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    tools:context=&quot;.MainActivity&quot;&gt;
+
+    &lt;ListView
+        android:id=&quot;@+id/fruit_listview&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;/&gt;
+
+&lt;/LinearLayout&gt; 
+</code></pre>
+<p>数据模型Fruit:里面只包含两个属性，FruitName代表水果名字，ImageId代表水果图片。</p>
+<pre><code> public class Fruit {
+    private String FruitName;
+    private int ImageId;
+
+    public Fruit(String fruitName, int imageId) {
+        FruitName = fruitName;
+        ImageId = imageId;
+    }
+
+    public String getFruitName() {
+        return FruitName;
+    }
+
+    public int getImageId() {
+        return ImageId;
+    }
+} 
+</code></pre>
+<p>item布局layout</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;&gt;
+    &lt;ImageView
+        android:id=&quot;@+id/fruit_item_image&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;/&gt;
+    &lt;TextView
+        android:id=&quot;@+id/fruit_item_name&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;/&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre>
+<p>Adapter内容，代码里有详细的注释。Adapter继承了系统提供的ArrayAdapter,构造方法要获取item的布局layout。Adapter的核心方法就是getView()，在这个方法中首先将Item的布局layout转换成了View，然后获取了View的控件，最后将数据和控件绑定，再将View返回给ListView。这个方法中可以优化提升效率，我们看到每次ListView要生成一个Item时都得生成一个新的View，但是在这里所有的View样式是一样的，那么当ListView要生成新的Item的View时，能不能利用已经滑出界面的Item的View呢？答案是可以的，而且可以借助ViewHolder将已经获取到的View中的控件保存起来，避免每次都获取控件，具体的实现在后面会写出来。</p>
+<pre><code>public class Adapter extends ArrayAdapter&lt;Fruit&gt; {
+    int ResId;
+    public Adapter(@NonNull Context context, int resource, @NonNull List objects) {
+        super(context, resource, objects);
+        //item的布局layoutId(R.layout.)
+        ResId = resource;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        //将item的布局layout转化为View
+        View view = LayoutInflater.from(parent.getContext()).inflate(ResId,parent,false);
+        //获取item布局中的ImageView和TextView
+        ImageView FruitImage = view.findViewById(R.id.fruit_item_image);
+        TextView FruitName = view.findViewById(R.id.fruit_item_name);
+        //获取对应位置的数据对象
+        Fruit fruit = (Fruit) getItem(position);
+        //布局绑定数据
+        FruitImage.setImageResource(fruit.getImageId());
+        FruitName.setText(fruit.getFruitName());
+        return view;
+    }
+}
+</code></pre>
+<p>MainActivity的代码</p>
+<pre><code>public class MainActivity extends AppCompatActivity {
+
+    private List&lt;Fruit&gt; FruitList = new ArrayList&lt;&gt;();
+    private ListView listView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        //初始化测试数据
+        initData();
+        //绑定ListView控件
+        listView = findViewById(R.id.fruit_listview);
+        //生成我们前面写的适配器
+        Adapter adapter = new Adapter(MainActivity.this,R.layout.fruit_list_item,FruitList);
+        //ListView绑定适配器
+        listView.setAdapter(adapter);
+    }
+    //初始化数据
+    //这里水果的名称和图片并不是对应的，只是随便找了几张图片来测试
+    //但是我们可以看到测试数据由三组重复数据构成，一组数据有6个数据模型对象
+    //只要三组的图片顺序和名称对应上就没问题
+    private void initData(){
+        for (int i = 0; i &lt; 3 ; i++){
+            Fruit a = new Fruit(&quot;Apple&quot;+i,R.drawable.a);
+            FruitList.add(a);
+            Fruit b = new Fruit(&quot;Banana&quot;+i,R.drawable.b);
+            FruitList.add(b);
+            Fruit c = new Fruit(&quot;Orange&quot;+i,R.drawable.c);
+            FruitList.add(c);
+            Fruit d = new Fruit(&quot;Demon&quot;+i,R.drawable.d);
+            FruitList.add(d);
+            Fruit e = new Fruit(&quot;Lemon&quot;+i,R.drawable.e);
+            FruitList.add(e);
+            Fruit f = new Fruit(&quot;Watermon&quot;+i,R.drawable.f);
+            FruitList.add(f);
+        }
+    }
+}
+</code></pre>
+<p>最后效果如下图所示<br>
+<img src="https://And-Git-roid.github.io/post-images/1595506834799.gif" alt="" loading="lazy"><br>
+接下来是对之前提到过的Adapter的优化，具体代码如下。</p>
+<pre><code>public class Adapter extends ArrayAdapter&lt;Fruit&gt; {
+    int ResId;
+    public Adapter(@NonNull Context context, int resource, @NonNull List objects) {
+        super(context, resource, objects);
+        //item的布局layoutId(R.layout.)
+        ResId = resource;
+    }
+
+    class ViewHolder {
+        ImageView FruitImage;
+        TextView FruitName;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+        Fruit fruit = getItem(position);
+        View view;
+        ViewHolder holder;
+        //先判断convertView是否为空
+        if (convertView == null){
+            //将item的布局layout转化为View
+            view = LayoutInflater.from(parent.getContext()).inflate(ResId,parent,false);
+            holder = new ViewHolder();
+            holder.FruitImage = view.findViewById(R.id.fruit_item_image);
+            holder.FruitName = view.findViewById(R.id.fruit_item_name);
+            view.setTag(holder);
+        }else {
+            view = convertView;
+            holder = (ViewHolder) view.getTag();
+        }
+        holder.FruitImage.setImageResource(fruit.getImageId());
+        holder.FruitName.setText(fruit.getFruitName());
+        return view;
+    }
+}
+</code></pre>
+<p>ListView的Item的点击事件有OnItemClickListener,简单贴一下代码</p>
+<pre><code>listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView&lt;?&gt; adapterView, View view, int i, long l) {
+                //在这里面实现具体操作
+            }
+        });
+</code></pre>
+<p>我们可以看到ListView的使用并不复杂，在不优化的情况下就更加简单了。但是它只能以列表的形式展示内容，而且不适合用于多种类型item的展示，效率较低，在最后会统一对比ListView和RecyclerView的缓存机制。<br>
+RecyclerView的Demo展示和ListView同样的内容。接下来开始看代码。<br>
+同样的配方，同样的主界面布局（只是ListView换成RecyclerView）、item布局和展示内容。<br>
+主界面布局：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    tools:context=&quot;.MainActivity&quot;&gt;
+
+    &lt;androidx.recyclerview.widget.RecyclerView
+        android:id=&quot;@+id/fruit_recycler&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;/&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre>
+<p>item布局：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:orientation=&quot;vertical&quot;
+    android:layout_margin=&quot;5dp&quot;&gt;
+
+    &lt;ImageView
+        android:id=&quot;@+id/fruit_item_image&quot;
+        android:layout_width=&quot;150dp&quot;
+        android:layout_height=&quot;150dp&quot;
+        android:layout_gravity=&quot;center_horizontal&quot;/&gt;
+    &lt;TextView
+        android:layout_gravity=&quot;left&quot;
+        android:id=&quot;@+id/fruit_item_name&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;/&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre>
+<p>Fruit数据模型：</p>
+<pre><code>public class Fruit {
+    private String name;
+    private int imageId;
+
+    public Fruit(String name, int imageId) {
+        this.name = name;
+        this.imageId = imageId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getImageId() {
+        return imageId;
+    }
+}
+</code></pre>
+<p>Adapter中的内容不一样了：</p>
+<pre><code>public class Adapter extends RecyclerView.Adapter&lt;Adapter.ViewHolder&gt; {
+
+    private List&lt;Fruit&gt; fruitList;
+
+    public Adapter(List&lt;Fruit&gt; dataList) {
+        fruitList = dataList;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fruit_list_item,parent,false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Fruit fruit = fruitList.get(position);
+        holder.fruitName.setText(fruit.getName());
+        holder.fruitImage.setImageResource(fruit.getImageId());
+    }
+
+    @Override
+    public int getItemCount() {
+        return fruitList.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder{
+
+        ImageView fruitImage;
+        TextView fruitName;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            fruitImage = itemView.findViewById(R.id.fruit_item_image);
+            fruitName = itemView.findViewById(R.id.fruit_item_name);
+        }
+    }
+}
+</code></pre>
+<p>MainActivity代码：</p>
+<pre><code>public class MainActivity extends AppCompatActivity {
+
+    private List&lt;Fruit&gt; dataList = new ArrayList&lt;&gt;();
+    RecyclerView recycler;
+    LinearLayoutManager linearManager;
+    StaggeredGridLayoutManager staggerManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initData();
+        recycler = findViewById(R.id.fruit_recycler);
+        linearManager = new LinearLayoutManager(this);
+        staggerManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+        Adapter adapter = new Adapter(dataList);
+        recycler.setLayoutManager(linearManager);
+        recycler.setAdapter(adapter);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_add){
+            recycler.setLayoutManager(staggerManager);
+            return true;
+        }
+
+        if (item.getItemId() == R.id.action_settings){
+            recycler.setLayoutManager(linearManager);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initData(){
+        for (int i = 0; i &lt; 3 ; i++){
+            //用于瀑布流展示
+            Fruit a = new Fruit(getRandomLengthName(&quot;Apple&quot;),R.drawable.a);
+            dataList.add(a);
+            Fruit b = new Fruit(getRandomLengthName(&quot;Banana&quot;),R.drawable.b);
+            dataList.add(b);
+            Fruit c = new Fruit(getRandomLengthName(&quot;Orange&quot;),R.drawable.c);
+            dataList.add(c);
+            Fruit d = new Fruit(getRandomLengthName(&quot;Demon&quot;),R.drawable.d);
+            dataList.add(d);
+            Fruit e = new Fruit(getRandomLengthName(&quot;Lemon&quot;),R.drawable.e);
+            dataList.add(e);
+            Fruit f = new Fruit(getRandomLengthName(&quot;Watermon&quot;),R.drawable.f);
+            dataList.add(f);
+        }
+    }
+//将水果名字的长度随机变长，使瀑布流效果更明显一些
+    private String getRandomLengthName(String name){
+        Random random = new Random();
+        int length = random.nextInt(10)+1;
+        StringBuilder builder = new StringBuilder();
+        for (int i  = 0; i &lt; length; i++){
+            builder.append(name);
+        }
+        return builder.toString();
+    }
+}
+</code></pre>
+<p>这里我们展示两种效果，分别是列表形式和瀑布流形式，效果如下：<br>
+<img src="https://And-Git-roid.github.io/post-images/1595554085089.gif" alt="" loading="lazy"><br>
+从基础使用上看，我们可以明显看出，RecyclerView相比ListView的区别如下：</p>
+<ul>
+<li>ViewHolder的编写更规范了</li>
+<li>RecyclerView复用Item的工作由它自身实现，不再需要像ListView那样自己setTag</li>
+<li>RecyclerView需要多做一步工作，设置LayoutManager。正是多了一个LayoutManager，RecyclerView才能更加灵活的变换展现形式，可以以列表、网格和瀑布流的形式进行展示。</li>
+</ul>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://And-Git-roid.github.io/post/git-yu-github/">
+                  <h3 class="post-title">
+                    Git与Github
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
