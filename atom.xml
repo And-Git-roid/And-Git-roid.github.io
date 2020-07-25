@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://And-Git-roid.github.io</id>
     <title>Gridea</title>
-    <updated>2020-07-24T11:51:23.955Z</updated>
+    <updated>2020-07-25T06:19:17.582Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://And-Git-roid.github.io"/>
     <link rel="self" href="https://And-Git-roid.github.io/atom.xml"/>
@@ -10,6 +10,141 @@
     <logo>https://And-Git-roid.github.io/images/avatar.png</logo>
     <icon>https://And-Git-roid.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[ListView和RecyclerView的基本使用（二）]]></title>
+        <id>https://And-Git-roid.github.io/post/listview-he-recyclerview-de-ji-ben-shi-yong-er/</id>
+        <link href="https://And-Git-roid.github.io/post/listview-he-recyclerview-de-ji-ben-shi-yong-er/">
+        </link>
+        <updated>2020-07-25T01:06:58.000Z</updated>
+        <content type="html"><![CDATA[<p>在上一篇中介绍了ListView和RecyclerView的使用流程，这一篇将介绍一些小的不同点。<br>
+首先是空数据处理的不同。ListView提供了setEmptyView这个API让我们处理Adapter中数据为空的情况。设置代码和效果如下：</p>
+<pre><code>listView = findViewById(R.id.fruit_listview);
+ listView.setEmptyView(findViewById(R.id.test_empty));
+</code></pre>
+<p><img src="https://And-Git-roid.github.io/post-images/1595639581872.jpg" alt="" loading="lazy"><br>
+在这里需要特别注意R.id.test_empty，通过代码来给出说明</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    tools:context=&quot;.MainActivity&quot;&gt;
+
+    &lt;ListView
+        android:id=&quot;@+id/fruit_listview&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;/&gt;
+    &lt;include
+        android:id=&quot;@+id/test_empty&quot;
+        layout=&quot;@layout/item_empty&quot;/&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre>
+<p>从上面的代码中我们可以看到test_empty是和ListView处于同一布局中的一个需要在空数据使需要展示的layout的id，这一点很重要。如果我们单独建立一个新的layout使它不处于当前ListView的同一布局中，你会发现没有任何效果。<br>
+RecyclerView中没有空数据的处理方式，需要我们自己来完成。我发现最简单有效的方法是在RecyclerView的外面嵌套一个布局，然后将空数据时需要展示的图片设置为布局的背景，当发现没有数据时让背景显示就可以了。<br>
+第二点是HeaderView和FootView两种类型的视图。ListView中提供了相关的API让我们设置，当我们只想在ListView的头部或者底部添加一个View的时候，可以不用影响到Adapter的编写。<br>
+<img src="https://And-Git-roid.github.io/post-images/1595642964938.webp" alt="" loading="lazy"><br>
+HeaderView的简单使用：<br>
+首先是头部View的layout布局</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:layout_width=&quot;match_parent&quot;
+    android:orientation=&quot;horizontal&quot;
+    android:layout_height=&quot;wrap_content&quot;&gt;
+
+    &lt;ImageView
+        android:id=&quot;@+id/header_image&quot;
+        android:layout_width=&quot;60dp&quot;
+        android:layout_height=&quot;60dp&quot;
+        android:src=&quot;@mipmap/nodata&quot;/&gt;
+    &lt;TextView
+        android:id=&quot;@+id/header_txt&quot;
+        android:text=&quot;用来测试头部和底部View&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_gravity=&quot;center_vertical&quot;/&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre>
+<p>然后我们生成头部view并且设置给ListView</p>
+<pre><code> //绑定ListView控件
+        listView = findViewById(R.id.fruit_listview);
+        View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.header_item,null);
+        TextView test = view.findViewById(R.id.header_txt);
+        test.setText(&quot;没问题了&quot;);
+        String text = &quot;测试&quot;;
+        listView.addHeaderView(view,text,true);
+        //生成我们前面写的适配器
+        Adapter adapter = new Adapter(MainActivity.this,R.layout.fruit_list_item,FruitList);
+        //ListView绑定适配器
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView&lt;?&gt; adapterView, View view, int i, long l) {
+                //在这里面实现具体操作
+                String s = (String) adapterView.getItemAtPosition(0);
+                Toast.makeText(MainActivity.this,s,Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,i+&quot;&quot;,Toast.LENGTH_SHORT).show();
+            }
+        });
+</code></pre>
+<p>我注意到addHeaderView()方法中有三个参数，但是第二个参数却不知道有什么作用。查阅了大量的文章之后，其实第二个参数Object data是Adapter中getItem获得的值。从上面的代码可以看出在item受到点击之后我会让Toast显示第一个Item，也就是HeaderView中getItem获取到的值，并且让Toast显示被点击item的当前位置，接下来我们看效果。<br>
+<img src="https://And-Git-roid.github.io/post-images/1595644320036.gif" alt="" loading="lazy"><br>
+这下我们就知道第二个参数有什么作用了。此外，当我们点击列表中第三项的item时显示的位置是3，所以说我们的headView的位置是0，它也算作整个ListView的一项，这并不难理解。需要注意的是addHeaderView()要在ListView设置Adapter之前。<br>
+RecyclerView没有设计HeaderView和FootView，只能我们自己去完成。简单粗暴的方式就是添加ViewType，根据类型生成不同的item。从网上看到另外一种思路，通过装饰者模式扩充Adapter的功能，从而实现添加HeaderView和FooterView，并且不影响Adapter的编写工作，后面会单独学习。<br>
+接下来我们看局部刷新。在更新了ListView的数据源之后，需要通过Adapter的notifyDataSetChanged来通知视图更新变化，好处是比较简单，坏处是会重绘每个item，但实际上并不是每个Item都需要重绘。我在Adapter中加了一个方法：</p>
+<pre><code> public void updateItemView(ListView listView, int position, Fruit newFruit){
+        int index = position - listView.getFirstVisiblePosition();
+        if (index &gt;= 0 &amp;&amp;  index &lt; listView.getChildCount() ){
+            getItem(position).setFruitName(newFruit.getFruitName());
+            getItem(position).setImageId(newFruit.getImageId());
+        }
+        View view = listView.getChildAt(position);
+        getView(position,view,listView);
+    }
+</code></pre>
+<p>然后我们点击第0个Item，然后改变第1个Item的内容来模仿数据更新的过程，代码和效果如下：</p>
+<pre><code> listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView&lt;?&gt; adapterView, View view, int i, long l) {
+                if (i == 0){
+                    Fruit f = new Fruit(&quot;我是牛奶&quot;,R.mipmap.cow);
+                    adapter.updateItemView(listView,1,f);
+                }
+            }
+        });
+</code></pre>
+<p><img src="https://And-Git-roid.github.io/post-images/1595648430681.gif" alt="" loading="lazy"><br>
+RecyclerView.Adapter为我们提供了notifyItemChanged()用于更新单个ItemView的刷新。代码和使用效果如下：</p>
+<pre><code>dataList.get(1).setName(&quot;我是齐天大圣孙悟空&quot;);
+dataList.get(1).setImageId(R.mipmap.monkey);
+adapter.notifyItemChanged(1);
+</code></pre>
+<p><img src="https://And-Git-roid.github.io/post-images/1595655452160.gif" alt="" loading="lazy"><br>
+最后就关于动画效果，RecyclerView给我们提供了一些Item动画相关的 API,ListView则没有。下面简单看一下RecyclerView的Item动画效果。<br>
+RecyclerView.ItemAnimator是一个抽象类，该抽象类有一个子类SimpleItemAnimator，不过也是一个抽象类，我们通常用的是它的孙子DefaultItemAnimator。在DefaultItemAnimator中有Add、Remove、Move、Change四种动画效果。<br>
+需要注意的是，要实现这四种动画效果，数据更新时不能通过</p>
+<pre><code>Adapter.notifyDataSetChanged();
+</code></pre>
+<p>而是通过：</p>
+<pre><code>Adapter.notifyItemInserted(int position) 
+Adapter.notifyItemRemoved(int position)
+Adapter.notifyItemChanged(int position)
+Adapter.notifyItemMoved(int fromPosition, int  toPosition)
+</code></pre>
+<p>接下来通过几行代码看一下效果：</p>
+<pre><code>DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
+defaultItemAnimator.setAddDuration(1000);
+recycler.setItemAnimator(defaultItemAnimator);
+</code></pre>
+<pre><code>Fruit f = new Fruit(&quot;我是齐天大圣孙悟空&quot;,R.mipmap.monkey);
+dataList.add(defaultP,f);
+adapter.notifyItemInserted(defaultP);
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://And-Git-roid.github.io/post-images/1595657952273.gif" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[ListView和RecyclerView的基本使用（一）]]></title>
         <id>https://And-Git-roid.github.io/post/listview-he-recyclerview-de-shi-yong-he-shi-xian-ji-zhi/</id>
