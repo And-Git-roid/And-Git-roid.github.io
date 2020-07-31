@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://And-Git-roid.github.io</id>
     <title>Gridea</title>
-    <updated>2020-07-31T01:31:33.593Z</updated>
+    <updated>2020-07-31T01:54:57.446Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://And-Git-roid.github.io"/>
     <link rel="self" href="https://And-Git-roid.github.io/atom.xml"/>
@@ -10,6 +10,32 @@
     <logo>https://And-Git-roid.github.io/images/avatar.png</logo>
     <icon>https://And-Git-roid.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[colorPrimary、colorPrimaryDark和colorAccent]]></title>
+        <id>https://And-Git-roid.github.io/post/colorprimarycolorprimarydark-he-coloraccent/</id>
+        <link href="https://And-Git-roid.github.io/post/colorprimarycolorprimarydark-he-coloraccent/">
+        </link>
+        <updated>2020-07-31T01:39:44.000Z</updated>
+        <content type="html"><![CDATA[<p><img src="https://And-Git-roid.github.io/post-images/1596159699127.png" alt="" loading="lazy"><br>
+1.colorPrimary：应用的主要色调，actionBar默认使用颜色，ToolBar导航栏的底色<br>
+2.colorPrimaryDark：应用的主要暗色调，statusBarColor默认使用该颜色。<br>
+3.statusBarColor 状态栏颜色，默认使用colorPrimaryDark<br>
+4.windowBackground 窗口背景颜色<br>
+5.navigationBarColor 底部栏颜色<br>
+6.colorForeground 应用的前景色，ListView的分割线，switch滑动区默认使用该颜色<br>
+7.colorBackground 应用的背景色，popMenu的背景默认使用该颜色<br>
+8.colorAccent CheckBox，RadioButton，SwitchCompat等一般控件的选中效果默认采用该颜色<br>
+9.colorControlNormal CheckBox，RadioButton，SwitchCompat等默认状态的颜色。<br>
+10.colorControlHighlight 控件按压时的色调<br>
+11.colorControlActivated 控件选中时的颜色，默认使用colorAccent<br>
+12.colorButtonNormal 默认按钮的背景颜色<br>
+13.editTextColor ：默认EditView输入框字体的颜色。<br>
+14.textColor Button，textView的文字颜色<br>
+15.textColorPrimaryDisableOnly RadioButton checkbox等控件的文字<br>
+16.textColorPrimary 应用的主要文字颜色，actionBar的标题文字默认使用该颜色<br>
+17.colorSwitchThumbNormal switch thumbs 默认状态的颜色. (switch off)</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Android去掉标题栏]]></title>
         <id>https://And-Git-roid.github.io/post/android-qu-diao-biao-ti-lan/</id>
