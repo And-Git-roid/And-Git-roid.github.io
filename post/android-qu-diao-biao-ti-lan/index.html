@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://And-Git-roid.github.io/favicon.ico?v=1596158237701">
+<link rel="shortcut icon" href="https://And-Git-roid.github.io/favicon.ico?v=1596158501563">
 <link rel="stylesheet" href="https://And-Git-roid.github.io/styles/main.css">
 
 
@@ -33,7 +33,7 @@ requestWindowFeature(Window.FEATURE_NO_TITLE);
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://And-Git-roid.github.io">
-        <img src="https://And-Git-roid.github.io/images/avatar.png?v=1596158237701" class="site-logo">
+        <img src="https://And-Git-roid.github.io/images/avatar.png?v=1596158501563" class="site-logo">
         <h1 class="site-title">Gridea</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -112,7 +112,11 @@ requestWindowFeature(Window.FEATURE_NO_TITLE);
     &lt;/style&gt;
 加入上面的两个属性并使用
 </code></pre>
-<p>如果是给Application属性配置，那么整个应用的主题都没有ActionBar。如果是给某个Activity设置，那么只有这个Activity没有ActionBar。</p>
+<p>如果是给Application属性配置，那么整个应用的主题都没有ActionBar。如果是给某个Activity设置，那么只有这个Activity没有ActionBar。<br>
+第三种：</p>
+<pre><code>getSupportActionBar().hide();
+</code></pre>
+<p>在Activity中调用可以实现隐藏标题栏</p>
 
             </div>
             
