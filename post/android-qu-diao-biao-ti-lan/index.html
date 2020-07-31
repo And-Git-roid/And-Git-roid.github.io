@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于 | Gridea</title>
+<title>Android去掉标题栏 | Gridea</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,13 +18,11 @@
 
 
 
-    <meta name="description" content="
-欢迎来到我的小站呀，很高兴遇见你！🤝
+    <meta name="description" content="Android去掉标题栏实在使用的太频繁了，总结一下有哪些方法。
+第一种：
+requestWindowFeature(Window.FEATURE_NO_TITLE);
+//去掉标题栏这一句一定要写在setContentView()前面
 
-🏠 关于本站
-👨‍💻 博主是谁
-⛹ 兴趣爱好
-📬 联系我呀
 ..." />
     <meta name="keywords" content="" />
   </head>
@@ -97,20 +95,36 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">关于</h2>
-            <div class="post-date">2019-01-25</div>
+            <h2 class="post-title">Android去掉标题栏</h2>
+            <div class="post-date">2020-07-31</div>
             
             <div class="post-content" v-pre>
-              <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<h2 id="联系我呀">📬 联系我呀</h2>
+              <p>Android去掉标题栏实在使用的太频繁了，总结一下有哪些方法。<br>
+第一种：</p>
+<pre><code>requestWindowFeature(Window.FEATURE_NO_TITLE);
+//去掉标题栏这一句一定要写在setContentView()前面
+</code></pre>
+<p>第二种</p>
+<pre><code>自定义style
+&lt;style name=&quot;AppTheme.NoActionBar&quot; parent=&quot;AppTheme&quot;&gt;
+        &lt;item name=&quot;windowActionBar&quot;&gt;false&lt;/item&gt;
+        &lt;item name=&quot;windowNoTitle&quot;&gt;true&lt;/item&gt;
+    &lt;/style&gt;
+加入上面的两个属性并使用
+</code></pre>
+<p>如果是给Application属性配置，那么整个应用的主题都没有ActionBar。如果是给某个Activity设置，那么只有这个Activity没有ActionBar。</p>
 
             </div>
             
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://And-Git-roid.github.io/post/listview-he-recyclerview-de-ji-ben-shi-yong-er/">
+                  <h3 class="post-title">
+                    ListView和RecyclerView的基本使用（二）
+                  </h3>
+                </a>
+              </div>
             
 
             
